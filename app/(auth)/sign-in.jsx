@@ -1,32 +1,33 @@
+import { View, Text, ScrollView, Alert, Image } from "react-native";
 import { useState } from "react";
-import { Link, router } from "expo-router";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 
 import { images } from "../../constants";
-import { createUser } from "../../lib/appwrite";
-
 import FormField from "../../components/FormField";
+import { Link, router } from "expo-router";
 
 import CustomButton from "../../components/CustomButton";
+import { signIn } from "../../lib/appwrite";
 
-const SignUp = () => {
+const SignIn = () => {
   const [form, setForm] = useState({
-    username: "",
     email: "",
     password: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const submit = async () => {
-    if (!form.username || !form.email || !form.password) {
+    if (!form.email || !form.password) {
       Alert.alert("Error", "Please fill in all the fields");
     }
 
     setIsSubmitting(true);
 
     try {
-      const result = await createUser(form.email, form.password, form.username)
+      await signIn(form.email, form.password)
+
+      
 
       router.replace('/home')
     } catch (error) {
@@ -47,15 +48,8 @@ const SignUp = () => {
           />
 
           <Text className="text-2xl text-white text-semibold mt-10 font-psemibold">
-            Sign up to Aora
+            Log into Aora
           </Text>
-
-          <FormField
-            title="Username"
-            value={form.username}
-            handleChangeText={(e) => setForm({ ...form, username: e })}
-            otherStyles="mt-10"
-          />
 
           <FormField
             title="Email"
@@ -73,7 +67,7 @@ const SignUp = () => {
           />
 
           <CustomButton
-            title="Sign Up"
+            title="Sign In"
             handlePress={submit}
             containerStyles="mt-7"
             isLoading={isSubmitting}
@@ -81,13 +75,13 @@ const SignUp = () => {
 
           <View className="justify-center pt-5 flex-row gap-2">
             <Text className="text-lg text-gray-100 font-pregular">
-              Have an account already?
+              Don't have an account?
             </Text>
             <Link
-              href="/sign-in"
+              href="/sign-up"
               className="text-lg font=psemibold text-secondary"
             >
-              Sign In
+              Sign Up
             </Link>
           </View>
         </View>
@@ -96,4 +90,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

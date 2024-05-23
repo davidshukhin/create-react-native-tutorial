@@ -3,6 +3,8 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { useEffect } from "react";
 
+import GlobalProvider from '../context/GlobalProvider';
+
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
@@ -30,6 +32,7 @@ const RootLayout = () => {
     return null;
   }
   return (
+    <GlobalProvider>
     <Stack>
         <Stack.Screen name = "index"
         options={{ headerShown:
@@ -44,7 +47,8 @@ const RootLayout = () => {
         options={{ headerShown:
         false }} /> */}
     </Stack>
+    </GlobalProvider>
   )
 }
 
-export default RootLayout
+export default RootLayout;
